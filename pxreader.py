@@ -12,7 +12,7 @@ def _ensure_file_exist(f: str):
         raise FileNotFoundError(f"File {f} does not exist.")
 
 
-class TransientXFitsReader:
+class PXReader:
     def __init__(self, filename: str):
         _ensure_file_exist(filename)
 
