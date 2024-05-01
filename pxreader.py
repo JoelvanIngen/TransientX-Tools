@@ -19,10 +19,15 @@ def gauss(x, amp, mu, sigma):
 
 
 class PXReader:
-    def __init__(self, filename: str):
-        _ensure_file_exist(filename)
+    def __init__(self, path: str, filename: str):
+        _ensure_file_exist(path)
 
-        with fits.open(filename) as hdul:
+        self.path = path  # Source filename and path to filename
+        self.png_path = path.replace('.px', '.png')
+        self.filename = filename  # Source filename without path
+        self.png_filename = filename.replace('.px', '.png')
+
+        with fits.open(path) as hdul:
             # Load flux graph
             data = hdul[2].data
             self.flux_datapoints = data[0][1]
@@ -44,7 +49,6 @@ class PXReader:
             self.gb = float(d[14][4][11:])
             self.distance = float(d[16][4][23:])
 
-            self.filename = filename
             self.fil_filename = d[17][4]
 
             # Brightness data
