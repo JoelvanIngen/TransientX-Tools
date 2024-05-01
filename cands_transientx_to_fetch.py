@@ -2,6 +2,21 @@
 TransientX: Using data from https://github.com/ypmen/TransientX/blob/master/src/singlepulse/candplot.cpp, starting on line 415
 Fetch: Using data from readme.md or cand2h5 function in https://github.com/devanshkv/fetch/blob/master/bin/candmaker.py
 """
+import os
+import sys
+
+
+def parse_arguments():
+    if not len(sys.argv) == 3:
+        print('Usage: python3 [TransientX cands file] [Filename to output Fetch cands file]')
+        sys.exit(1)
+
+    return sys.argv[1:]
+
+
+def ensure_file_exists(filepath: str):
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(filepath)
 
 
 def parse_transientx_line(text: str):
@@ -39,7 +54,7 @@ def parse_transientx_line(text: str):
 
 def parse_transientx_file(transientx_filename: str):
     with open(transientx_filename, 'r') as f:
-        return [parse_transientx_line(line) for line in f.readlines()]
+        return [parse_transientx_line(line.strip()) for line in f.readlines()]
 
 
 def write_fetch_file(fetch_filename: str, data: list[dict[str: str]]):
@@ -56,3 +71,15 @@ def write_fetch_file(fetch_filename: str, data: list[dict[str: str]]):
             ]
 
             f.write(','.join(fetch_data) + '\n')
+
+
+def main():
+    transientx_filename, fetch_filename = parse_arguments()
+    ensure_file_exists(transientx_filename)
+
+    data = parse_transientx_file(transientx_filename)
+    write_fetch_file(fetch_filename, data)
+
+
+if __name__ == '__main__':
+    main()
