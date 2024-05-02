@@ -31,13 +31,16 @@ class Clusters:
             print("")
 
     def plot_cluster_against_time(self):
-        colours = ['red', 'green', 'blue']
+        colours = ['red', 'green', 'blue', 'magenta', 'cyan', 'yellow', 'black']
+        if self.n_clusters > len(colours):
+            raise ValueError(f'Plotting does not (yet) support more than {len(colours)} clusters.')
+
         # Plot candidates
         for i, (reader, label) in enumerate(zip(self.readers, self.labels)):
             plt.scatter(reader.date_mjd, i, color=colours[label])
 
         # Create legend
-        patches = [mpatches.Patch(color=colours[i], label=f"Cluster {i+1}") for i in range(3)]
+        patches = [mpatches.Patch(color=colours[i], label=f"Cluster {i+1}") for i in range(self.n_clusters)]
         plt.legend(handles=patches)
 
         plt.xlabel("Time (MJD)")
@@ -48,8 +51,9 @@ class Clusters:
 def main():
     paths, filenames = list_ext_files('.px', directory='files')
 
-    clusters = Clusters(paths, filenames, n_clusters=3)
+    clusters = Clusters(paths, filenames, n_clusters=5)
     clusters.plot_cluster_against_time()
+    clusters.create_cluster_folder()
 
 
 if __name__ == '__main__':
