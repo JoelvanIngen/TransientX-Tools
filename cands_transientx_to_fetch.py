@@ -66,8 +66,6 @@ def write_fetch_file(fetch_filename: str, data: list[dict[str: str]]):
                 line['start time'],  # NON-EXISTENT
                 line['dm'],
                 line['width'],
-                line['label'],  # NON-EXISTENT
-                line['kill mask path']  # NON-EXISTENT
             ]
 
             f.write(','.join(fetch_data) + '\n')
