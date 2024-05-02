@@ -30,39 +30,41 @@ class Clusters:
             print(f"Label: {label+1}")
             print("")
 
-    def plot_cluster_against_time(self):
+    def _plot(self, x, y):
         colours = ['red', 'green', 'blue', 'magenta', 'cyan', 'yellow', 'black']
+
+        # Assure we won't get an index error retrieving colours
         if self.n_clusters > len(colours):
             raise ValueError(f'Plotting does not (yet) support more than {len(colours)} clusters.')
 
-        # Plot candidates
-        for i, (reader, label) in enumerate(zip(self.readers, self.labels)):
-            plt.scatter(reader.date_mjd, i, color=colours[label])
+        for i in range(len(self.readers)):
+            plt.scatter(x[i], y[i], c=colours[self.labels[i]])
 
         # Create legend
-        patches = [mpatches.Patch(color=colours[i], label=f"Cluster {i+1}") for i in range(self.n_clusters)]
+        patches = [mpatches.Patch(color=colours[i], label=f"Cluster {i + 1}") for i in range(self.n_clusters)]
         plt.legend(handles=patches)
+
+    def plot_cluster_against_time(self):
+        x = [reader.date_mjd for reader in self.readers]
+        y = [i for i in range(len(self.readers))]
+
+        self._plot(x, y)
 
         plt.xlabel("Time (MJD)")
         plt.ylabel("Candidate ID")
         plt.show()
 
     def plot_dm_against_snr(self):
-        colours = ['red', 'green', 'blue', 'magenta', 'cyan', 'yellow', 'black']
-        if self.n_clusters > len(colours):
-            raise ValueError(f'Plotting does not (yet) support more than {len(colours)} clusters.')
+        x = [reader.snr for reader in self.readers]
+        y = [reader.dm for reader in self.readers]
 
-        # Plot candidates
-        for i, (reader, label) in enumerate(zip(self.readers, self.labels)):
-            plt.scatter(reader.snr, reader.dm, color=colours[label])
-
-        # Create legend
-        patches = [mpatches.Patch(color=colours[i], label=f"Cluster {i+1}") for i in range(self.n_clusters)]
-        plt.legend(handles=patches)
+        self._plot(x, y)
 
         plt.xlabel("S/N")
         plt.ylabel("DM")
         plt.show()
+
+
 
 
 def main():
@@ -70,7 +72,6 @@ def main():
 
     clusters = Clusters(paths, filenames, n_clusters=5)
     clusters.plot_dm_against_snr()
-    clusters.create_cluster_folder()
 
 
 if __name__ == '__main__':
