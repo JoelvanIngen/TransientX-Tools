@@ -8,7 +8,8 @@ def main():
 
     readers = [PXReader(path, filename) for path, filename in zip(paths, filenames)]
 
-    features = [[r.snr, r.width, r.dm, r.max_dm, r.dm_diff_from_max, r.date_mjd, r.gl, r.gb, r.distance, r.flux_amp, r.flux_mu, r.flux_sigma]
+    # Unused: r.date_mjd, r.gl, r.gb, r.max_dm, r.dm_diff_from_max, r.distance, r.flux_amp, r.flux_mu, r.flux_sigma
+    features = [[r.snr, r.width, r.dm]
                 for r in readers]
 
     kmeans = KMeans(n_clusters=3).fit(features)
