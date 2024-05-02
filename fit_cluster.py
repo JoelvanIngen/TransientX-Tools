@@ -1,4 +1,6 @@
 from sklearn.cluster import KMeans
+import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
 from filetools import list_ext_files, copy_file
 from pxreader import PXReader
 
@@ -28,13 +30,26 @@ class Clusters:
             print(f"Label: {label}")
             print("")
 
+    def plot_cluster_against_time(self):
+        colours = ['red', 'green', 'blue']
+        # Plot candidates
+        for i, (reader, label) in enumerate(zip(self.readers, self.labels)):
+            plt.scatter(reader.date_mjd, i, color=colours[label])
+
+        # Create legend
+        patches = [mpatches.Patch(color=colours[i], label=f"Cluster {i+1}") for i in range(3)]
+        plt.legend(handles=patches)
+
+        plt.xlabel("Time (MJD)")
+        plt.ylabel("Candidate ID")
+        plt.show()
+
 
 def main():
     paths, filenames = list_ext_files('.px', directory='files')
 
     clusters = Clusters(paths, filenames, n_clusters=3)
-    clusters.print_cluster_info()
-    clusters.create_cluster_folder()
+    clusters.plot_cluster_against_time()
 
 
 if __name__ == '__main__':
