@@ -21,13 +21,13 @@ class Clusters:
 
     def create_cluster_folder(self):
         for i, (reader, label) in enumerate(zip(self.readers, self.labels)):
-            copy_file(reader.path, f"clusters/{label}", reader.filename)
-            copy_file(reader.png_path, f"clusters/{label}", reader.png_filename)
+            copy_file(reader.path, f"clusters/{label+1}", reader.filename)
+            copy_file(reader.png_path, f"clusters/{label+1}", reader.png_filename)
 
     def print_cluster_info(self):
         for i, (reader, label) in enumerate(zip(self.readers, self.labels)):
             print(f"PX: {reader.get_info_str()}")
-            print(f"Label: {label}")
+            print(f"Label: {label+1}")
             print("")
 
     def plot_cluster_against_time(self):
