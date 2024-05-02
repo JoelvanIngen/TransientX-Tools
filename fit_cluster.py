@@ -47,12 +47,29 @@ class Clusters:
         plt.ylabel("Candidate ID")
         plt.show()
 
+    def plot_dm_against_snr(self):
+        colours = ['red', 'green', 'blue', 'magenta', 'cyan', 'yellow', 'black']
+        if self.n_clusters > len(colours):
+            raise ValueError(f'Plotting does not (yet) support more than {len(colours)} clusters.')
+
+        # Plot candidates
+        for i, (reader, label) in enumerate(zip(self.readers, self.labels)):
+            plt.scatter(reader.snr, reader.dm, color=colours[label])
+
+        # Create legend
+        patches = [mpatches.Patch(color=colours[i], label=f"Cluster {i+1}") for i in range(self.n_clusters)]
+        plt.legend(handles=patches)
+
+        plt.xlabel("S/N")
+        plt.ylabel("DM")
+        plt.show()
+
 
 def main():
     paths, filenames = list_ext_files('.px', directory='files')
 
     clusters = Clusters(paths, filenames, n_clusters=5)
-    clusters.plot_cluster_against_time()
+    clusters.plot_dm_against_snr()
     clusters.create_cluster_folder()
 
 
