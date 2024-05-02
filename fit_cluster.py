@@ -68,7 +68,7 @@ class Clusters:
 def main():
     paths, filenames = list_ext_files('.px', directory='files')
 
-    clusters = Clusters(paths, filenames, n_clusters=5)
+    clusters = Clusters(paths, filenames, n_clusters=4)
     clusters.plot_dm_against_snr()
 
 
