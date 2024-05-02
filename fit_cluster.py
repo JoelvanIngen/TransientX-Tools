@@ -65,8 +65,6 @@ class Clusters:
         plt.show()
 
 
-
-
 def main():
     paths, filenames = list_ext_files('.px', directory='files')
 
