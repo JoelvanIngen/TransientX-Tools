@@ -20,12 +20,12 @@ class Clusters:
         self.labels = self.kmeans.labels_
 
     def create_cluster_folder(self):
-        for i, (reader, label) in enumerate(zip(self.readers, self.labels)):
+        for reader, label in zip(self.readers, self.labels):
             copy_file(reader.path, f"clusters/{label+1}", reader.filename)
             copy_file(reader.png_path, f"clusters/{label+1}", reader.png_filename)
 
     def print_cluster_info(self):
-        for i, (reader, label) in enumerate(zip(self.readers, self.labels)):
+        for reader, label in zip(self.readers, self.labels):
             print(f"PX: {reader.get_info_str()}")
             print(f"Label: {label+1}")
             print("")
