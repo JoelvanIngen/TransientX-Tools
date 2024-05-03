@@ -79,6 +79,7 @@ def write_fetch_file(fetch_filename: str, data: list[CandidateData]) -> None:
 def main():
     cmd_args = parse_arguments()
     ensure_file_exists(cmd_args.input)
+    ensure_file_exists(cmd_args.filterbank)
 
     data = parse_transientx_file(cmd_args.input)
     write_fetch_file(cmd_args.output, data)
