@@ -3,7 +3,7 @@ TransientX: Using data from https://github.com/ypmen/TransientX/blob/master/src/
 Fetch: Using data from readme.md or cand2h5 function in https://github.com/devanshkv/fetch/blob/master/bin/candmaker.py
 """
 import os
-import sys
+import argparse
 from dataclasses import dataclass
 
 
@@ -16,12 +16,13 @@ class CandidateData:
     width: str
 
 
-def parse_arguments():
-    if not len(sys.argv) == 3:
-        print('Usage: python3 [TransientX cands file] [Filename to output Fetch cands file]')
-        sys.exit(1)
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--input', type=str, help='TransientX .cands file to convert', required=True)
+    parser.add_argument('-o', '--output', type=str, help='fetch .cands file to write', required=True)
+    parser.add_argument('-f', '--filterbank', type=str, help='filterbank file to read', required=True)
 
-    return sys.argv[1:]
+    return parser.parse_args()
 
 
 def ensure_file_exists(filepath: str):
@@ -76,11 +77,11 @@ def write_fetch_file(fetch_filename: str, data: list[CandidateData]) -> None:
 
 
 def main():
-    transientx_filename, fetch_filename = parse_arguments()
-    ensure_file_exists(transientx_filename)
+    cmd_args = parse_arguments()
+    ensure_file_exists(cmd_args.input)
 
-    data = parse_transientx_file(transientx_filename)
-    write_fetch_file(fetch_filename, data)
+    data = parse_transientx_file(cmd_args.input)
+    write_fetch_file(cmd_args.output, data)
 
 
 if __name__ == '__main__':
