@@ -5,6 +5,7 @@ Fetch: Using data from readme.md or cand2h5 function in https://github.com/devan
 import os
 import argparse
 from dataclasses import dataclass
+from sigpyproc.readers import FilReader
 
 
 @dataclass
@@ -30,7 +31,12 @@ def ensure_file_exists(filepath: str):
         raise FileNotFoundError(filepath)
 
 
-def parse_transientx_line(text: str) -> CandidateData:
+def get_tstart_from_fil(fil_filename: str) -> float:
+    fil = FilReader(fil_filename)
+    return float(fil.header.tstart)
+
+
+def parse_transientx_line(text: str, fil_tstart: float) -> CandidateData:
     """
     TransientX cands file:
     TAB separated
@@ -48,18 +54,22 @@ def parse_transientx_line(text: str) -> CandidateData:
     """
     data_list = text.split('\t')
 
+    cand_mjd = float(data_list[2])
+    time_elapsed_mjd = cand_mjd - fil_tstart
+    time_elapsed_sec = time_elapsed_mjd * 86400
+
     return CandidateData(
         fil_filename=data_list[10],
         snr=data_list[5],
-        tcand="PLACEHOLDER",  # TODO: Implement
+        tcand=str(time_elapsed_sec),
         dm=data_list[3],
         width=data_list[4]
     )
 
 
-def parse_transientx_file(transientx_filename: str) -> list[CandidateData]:
+def parse_transientx_file(transientx_filename: str, fil_tstart: float) -> list[CandidateData]:
     with open(transientx_filename, 'r') as f:
-        return [parse_transientx_line(line.strip()) for line in f.readlines()]
+        return [parse_transientx_line(line.strip(), fil_tstart) for line in f.readlines()]
 
 
 def write_fetch_file(fetch_filename: str, data: list[CandidateData]) -> None:
@@ -68,7 +78,7 @@ def write_fetch_file(fetch_filename: str, data: list[CandidateData]) -> None:
             fetch_data = [
                 candidate.fil_filename,
                 candidate.snr,
-                candidate.tcand,  # TODO: Implement
+                candidate.tcand,
                 candidate.dm,
                 candidate.width,
             ]
@@ -81,7 +91,9 @@ def main():
     ensure_file_exists(cmd_args.input)
     ensure_file_exists(cmd_args.filterbank)
 
-    data = parse_transientx_file(cmd_args.input)
+    fil_tstart = get_tstart_from_fil(cmd_args.filterbank)
+
+    data = parse_transientx_file(cmd_args.input, fil_tstart)
     write_fetch_file(cmd_args.output, data)
 
 
