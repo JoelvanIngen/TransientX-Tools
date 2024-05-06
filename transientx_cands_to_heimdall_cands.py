@@ -20,7 +20,7 @@ class CandidateData:
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input', type=str, help='TransientX .cands file to convert', required=True)
-    parser.add_argument('-o', '--output', type=str, help='fetch .cands file to write', required=True)
+    parser.add_argument('-o', '--output', type=str, help='Heimdall .cands file to write', required=True)
     parser.add_argument('-f', '--filterbank', type=str, help='filterbank file to read', required=True)
 
     return parser.parse_args()
@@ -72,7 +72,7 @@ def parse_transientx_file(transientx_filename: str, fil_tstart: float) -> list[C
         return [parse_transientx_line(line.strip(), fil_tstart) for line in f.readlines()]
 
 
-def write_fetch_file(fetch_filename: str, data: list[CandidateData]) -> None:
+def write_heimdall_file(fetch_filename: str, data: list[CandidateData]) -> None:
     with open(fetch_filename, 'w') as f:
         for candidate in data:
             fetch_data = [
@@ -94,7 +94,7 @@ def main():
     fil_tstart = get_tstart_from_fil(cmd_args.filterbank)
 
     data = parse_transientx_file(cmd_args.input, fil_tstart)
-    write_fetch_file(cmd_args.output, data)
+    write_heimdall_file(cmd_args.output, data)
 
 
 if __name__ == '__main__':
