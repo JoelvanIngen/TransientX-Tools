@@ -72,10 +72,10 @@ def parse_transientx_file(transientx_filename: str, fil_tstart: float) -> list[C
         return [parse_transientx_line(line.strip(), fil_tstart) for line in f.readlines()]
 
 
-def write_heimdall_file(fetch_filename: str, data: list[CandidateData]) -> None:
-    with open(fetch_filename, 'w') as f:
+def write_heimdall_file(heimdall_filename: str, data: list[CandidateData]) -> None:
+    with open(heimdall_filename, 'w') as f:
         for candidate in data:
-            fetch_data = [
+            heimdall_data = [
                 candidate.fil_filename,
                 candidate.snr,
                 candidate.tcand,
@@ -83,7 +83,7 @@ def write_heimdall_file(fetch_filename: str, data: list[CandidateData]) -> None:
                 candidate.width,
             ]
 
-            f.write(','.join(fetch_data) + '\n')
+            f.write(','.join(heimdall_data) + '\n')
 
 
 def main():
