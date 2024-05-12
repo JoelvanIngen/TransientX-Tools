@@ -74,6 +74,8 @@ def parse_transientx_file(transientx_filename: str, fil_tstart: float) -> list[C
 
 def write_heimdall_file(heimdall_filename: str, data: list[CandidateData]) -> None:
     with open(heimdall_filename, 'w') as f:
+        f.write("file,snr,stime,width,dm,label,chan_mask_path,num_files\n")
+
         for candidate in data:
             heimdall_data = [
                 candidate.fil_filename,
