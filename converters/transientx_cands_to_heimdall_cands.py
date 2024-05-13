@@ -4,6 +4,7 @@ Fetch: Using data from readme.md or cand2h5 function in https://github.com/devan
 """
 import os
 import argparse
+from math import log2
 from dataclasses import dataclass
 from sigpyproc.readers import FilReader
 
@@ -81,8 +82,8 @@ def write_heimdall_file(heimdall_filename: str, data: list[CandidateData]) -> No
                 candidate.fil_filename,
                 candidate.snr,
                 candidate.tcand,
+                log2(candidate.width),
                 candidate.dm,
-                candidate.width,
             ]
 
             f.write(','.join(heimdall_data) + '\n')
