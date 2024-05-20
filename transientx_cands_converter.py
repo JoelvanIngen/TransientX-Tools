@@ -21,7 +21,7 @@ class CandidateData:
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input', type=str, help='TransientX .cands file to convert', required=True)
-    parser.add_argument('-o', '--output', type=str, help='Heimdall .cands file to write', required=True)
+    parser.add_argument('-o', '--output', type=str, help='Heimdall candidate file to write', required=True)
     parser.add_argument('-f', '--filterbank', type=str, help='filterbank file to read', required=True)
 
     return parser.parse_args()
