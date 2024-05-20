@@ -13,7 +13,7 @@ from sigpyproc.readers import FilReader
 class CandidateData:
     fil_filename: str
     snr: str
-    tcand: str
+    tcand: float
     dm: str
     width: str
 
@@ -62,7 +62,7 @@ def parse_transientx_line(text: str, fil_tstart: float) -> CandidateData:
     return CandidateData(
         fil_filename=data_list[10],
         snr=data_list[5],
-        tcand=str(time_elapsed_sec),
+        tcand=time_elapsed_sec,
         dm=data_list[3],
         width=data_list[4]
     )
@@ -82,7 +82,7 @@ def write_heimdall_file(heimdall_filename: str, data: list[CandidateData]) -> No
                 candidate.fil_filename,
                 candidate.snr,
                 candidate.tcand,
-                str(log2(float(candidate.width))),
+                str(log2(candidate.width)),
                 candidate.dm,
             ]
 
