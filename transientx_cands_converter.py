@@ -82,7 +82,7 @@ def write_heimdall_file(heimdall_filename: str, data: list[CandidateData]) -> No
                 candidate.fil_filename,
                 candidate.snr,
                 candidate.tcand,
-                str(log2(candidate.width)),
+                str(log2(float(candidate.width))),
                 candidate.dm,
             ]
 
