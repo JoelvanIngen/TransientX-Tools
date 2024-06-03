@@ -5,7 +5,7 @@
 - Activate the virtual environment and run `python -m pip -V` to confirm the environment is activated.
     - Caution: On some configurations `pip` defaults to the default or global environment. It is recommended to use `python -m pip` instead.
     - If `pip -V` shows the activated virtual environment, using `pip` works too.
-- Ensure `git` is installed and clone this repo to a local folder using `git clone https://github.com/JoelvanIngen/TransientX-Classifier/`
+- Ensure `git` is installed and clone this repo to a local folder using `git clone https://github.com/JoelvanIngen/TransientX-Tools/`
 - Install required modules using `python -m pip install -r requirements.txt`
 - Install `sigpyproc3` using `python -m pip install -U git+https://github.com/FRBs/sigpyproc3`
 
