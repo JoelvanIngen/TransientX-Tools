@@ -1,4 +1,18 @@
 # TransientX-Tools
+## Using candsfile.py
+candsfile.py can be used by running the command `python candsfile.py` with appropriate options. Next will be an overview of these options.
+
+| Short | Long        | Type | Required | Description                                                                                                                                                            |
+|-------|-------------|------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -n    | --number    | int  | yes      | Maximum amount of candidates to keep. Candidates will be eliminated based on low S/N ratio until the number of candidates is no longer above this value.               |
+| -i    | --input     | str  | no       | Optionally specify an input file. If not specified, all .cands files in the current directory will be processed.                                                       |
+| -o    | --output    | str  | no       | Give the output file a specific name. If not, the new file will get the _trunc suffix automatically.                                                                   |
+|       | --dmc       | int  | no       | A DM threshold below which candidates will be eliminated without regard for their S/N value.                                                                           |
+| -c    | --clean     |      | no       | Removes PNGs from eliminated candidates. This action cannot be undone and should only be performed on copies to prevent data loss.                                     |
+| -w    | --overwrite |      | no       | Overwrites the original candidate file(s) with the output candidate file(s). This action cannot be undone and should only be performed on copies to prevent data loss. |
+| -f    | --force     |      | no       | Skips the warning prompt when running either -c or -w. When used, the user will not be warned about potential data loss.                                               |
+| -d    | --debug     |      | no       | Shows debug logging output.                                                                                                                                            |
+
 ## Using candidate file converter
 ### Environment
 - Create a virtual environment using conda or venv.
