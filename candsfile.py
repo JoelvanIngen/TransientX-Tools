@@ -45,6 +45,7 @@ def parse_args():
     parser.add_argument("--dmc", type=int, required=False, help="DM cutoff under which value to drop candidates")
     parser.add_argument("-o", "--output", type=str, required=False, help="Output file")
     parser.add_argument("-c", "--clean", required=False, action='store_true', help="Remove PNGs from rejected candidates")
+    parser.add_argument("-w", "--overwrite", required=False, action='store_true', help="Overwrite input file")
     parser.add_argument("-d", "--debug", required=False, action='store_true', help="Print debug logging output")
     return parser.parse_args()
 
@@ -116,7 +117,19 @@ def main():
     else:
         in_files = [file for file in os.listdir() if file.endswith(".cands")]
 
-    out_files = [args.output] if args.output else [filetools.add_to_filename(file, "trunc") for file in in_files]
+    # Prevent future exceptions by disallowing multiple input files if specific output file name
+    if args.output and len(in_files) > 1:
+        logger.error("Can only use single input file if output filename is specified")
+        sys.exit(1)
+
+    out_files = []
+    for in_file in in_files:
+        if args.output:
+            out_files.append(args.output)
+        elif args.overwrite:
+            out_files.append(in_file)
+        else:
+            out_files.append(filetools.add_to_filename(in_file, "trunc"))
 
     for in_file, out_file in zip(in_files, out_files):
         convert_file(in_file, out_file)
