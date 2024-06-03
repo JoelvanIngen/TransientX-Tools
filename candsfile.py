@@ -38,6 +38,21 @@ class TXCandidate:
         return self.candidate[SNR_IDX]
 
 
+def ask_overwrite_confirmation():
+    if (args.overwrite or args.clean) and not args.force:
+        print("Warning: you are about to overwrite candidate files or remove PNG files. This cannot be undone.")
+        print("Make sure you have a copy or backup of the original files somewhere.")
+        print("Are you sure you want to perform this action (y/N)?")
+        print("Hint: you can disable this warning by using the -f or --force argument.")
+
+        while True:
+            i = input("").lower().strip()
+            if i == "y":
+                return
+            elif i == "n":
+                sys.exit(0)
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--input", type=str, required=False, help="Input file")
@@ -47,6 +62,7 @@ def parse_args():
     parser.add_argument("-c", "--clean", required=False, action='store_true', help="Remove PNGs from rejected candidates")
     parser.add_argument("-w", "--overwrite", required=False, action='store_true', help="Overwrite input file")
     parser.add_argument("-d", "--debug", required=False, action='store_true', help="Print debug logging output")
+    parser.add_argument("-f", "--force", required=False, action='store_true', help="Ignore and auto-accept warnings")
     return parser.parse_args()
 
 
@@ -141,7 +157,8 @@ if __name__ == '__main__':
     if args.debug:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     else:
-
         logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
+    ask_overwrite_confirmation()
 
     main()
