@@ -10,6 +10,6 @@
 - Install `sigpyproc3` using `python -m pip install -U git+https://github.com/FRBs/sigpyproc3`
 
 ### Usage
-Use `transientx_cands_converter.py` by running `python transientx_cands_converter.py -i [TransientX cands file] -f [filterbank file] (-o [Heimdall csv output location])`.
+Use `tx2fetch.py` by running `python tx2fetch.py -i [TransientX cands file] -f [filterbank file] (-o [Heimdall csv output location])`.
 
-Usage can always be found running `python transientx_cands_converter.py --help`.
+Usage can always be found running `python tx2fetch.py --help`.
