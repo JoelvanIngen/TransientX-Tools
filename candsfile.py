@@ -89,6 +89,10 @@ def convert_file(in_file: str, out_file: str):
     cands = cands_filtered
 
     cands.sort(key=lambda x: x.snr, reverse=True)
+
+    if args.number > len(cands):
+        [remove_cand(cand) for cand in cands[args.number:]]
+
     cands = cands[0:args.number]
 
     n_cands_final = len(cands)
