@@ -29,3 +29,8 @@ def copy_file(src: str, dst_dir: str, filename: str) -> None:
     # copy2 as opposed to copyfile preserves metadata
     shutil.copy2(src, dest)
 
+
+def add_to_filename(filename: str, suffix) -> str:
+    filename_split = filename.split('.')
+    name, ext = '.'.join(filename_split[:-1]), filename_split[-1]
+    return f'{name}_{suffix}.{ext}'
