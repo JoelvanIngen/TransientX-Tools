@@ -1,4 +1,4 @@
-# TransientX-Classifier
+# TransientX-Tools
 ## Using candidate file converter
 ### Environment
 - Create a virtual environment using conda or venv.
