@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 DM_IDX: int = 3
 ID_IDX: int = 1
+PNGFILE_IDX: int = 8
 SNR_IDX: int = 5
 
 
@@ -29,6 +30,10 @@ class TXCandidate:
         return self.candidate[ID_IDX]
 
     @property
+    def png_file(self):
+        return self.candidate[PNGFILE_IDX]
+
+    @property
     def snr(self):
         return self.candidate[SNR_IDX]
 
@@ -39,8 +44,17 @@ def parse_args():
     parser.add_argument("-n", "--number", type=int, required=True, help="Number of candidates to keep")
     parser.add_argument("--dmc", type=int, required=False, help="DM cutoff under which value to drop candidates")
     parser.add_argument("-o", "--output", type=str, required=False, help="Output file")
+    parser.add_argument("-c", "--clean", required=False, action='store_true', help="Remove PNGs from rejected candidates")
     parser.add_argument("-d", "--debug", required=False, action='store_true', help="Print debug logging output")
     return parser.parse_args()
+
+
+def remove_cand(cand: TXCandidate) -> None:
+    if args.clean:
+        if os.path.isfile(cand.png_file):
+            os.remove(cand.png_file)
+        else:
+            logger.warning("Candidate PNG " + cand.png_file + " does not exist, skipping PNG deletion")
 
 
 def filter_cand(cand: TXCandidate) -> bool:
@@ -65,7 +79,14 @@ def convert_file(in_file: str, out_file: str):
     n_cands_initial = len(cands)
 
     # Apply filters
-    cands = [cand for cand in cands if filter_cand(cand)]
+    cands_filtered = []
+    for cand in cands:
+        if filter_cand(cand):
+            cands_filtered.append(cand)
+        else:
+            remove_cand(cand)
+
+    cands = cands_filtered
 
     cands.sort(key=lambda x: x.snr, reverse=True)
     cands = cands[0:args.number]
