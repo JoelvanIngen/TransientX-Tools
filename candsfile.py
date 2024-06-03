@@ -91,6 +91,7 @@ def convert_file(in_file: str, out_file: str):
     cands.sort(key=lambda x: x.snr, reverse=True)
 
     if args.number > len(cands):
+        logger.debug(f"Removing {len(cands[args.number:])} candidates that did not have high enough SNR")
         [remove_cand(cand) for cand in cands[args.number:]]
 
     cands = cands[0:args.number]
