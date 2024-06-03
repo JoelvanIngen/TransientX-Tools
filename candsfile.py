@@ -52,6 +52,7 @@ def parse_args():
 def remove_cand(cand: TXCandidate) -> None:
     if args.clean:
         if os.path.isfile(cand.png_file):
+            logger.debug(f"Removing PNG with filename {cand.png_file}")
             os.remove(cand.png_file)
         else:
             logger.warning("Candidate PNG " + cand.png_file + " does not exist, skipping PNG deletion")
