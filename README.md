@@ -1,4 +1,6 @@
 # TransientX-Tools
+A repo containing tools I wrote for my bachelor's dissertation.
+
 ## Using candsfile.py
 candsfile.py can be used by running the command `python candsfile.py` with appropriate options. Next will be an overview of these options.
 
